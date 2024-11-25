@@ -33,6 +33,7 @@ def fastbruno_cli():
         if not isinstance(fastapi_app, FastAPI):
             bruno_logger.error("App instance is not a FastAPI app")
             sys.exit(1)
+        bruno_logger.info("Brunofying FastAPI Routes...")
         FastBruno(fastapi_app).brunofy()
 
         bruno_logger.info("Bruno files generated successfully at ./bruno")
