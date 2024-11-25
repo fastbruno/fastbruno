@@ -1,0 +1,7 @@
+site_name: Fast Bruno
+theme:
+  name: readthedocs
+  palette:
+    primary: blue
+    accent: red
+site_description: Fast Bruno is a tool that allows you to generate Bruno files from FastAPI apps.
