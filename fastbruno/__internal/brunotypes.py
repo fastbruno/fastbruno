@@ -1,8 +1,7 @@
-from collections import defaultdict
 import json
-from typing import Any, Dict, List, Literal, NamedTuple, Optional, Union
+from collections import defaultdict
 from dataclasses import dataclass, field
-
+from typing import Any, Dict, List, Literal, NamedTuple, Optional, Union
 
 # Basic types
 AuthType = Literal["none", "basic", "bearer", "digest", "oauth2", "awsv4", "wsse"]

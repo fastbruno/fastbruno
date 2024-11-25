@@ -1,10 +1,10 @@
 import json
 import os
+
 from fastbruno.__internal.brunofy import Request, explore_route
+from fastbruno.__internal.fastapi import IS_FASTAPI_INSTALLED, APIRoute, FastAPI
 from fastbruno.__internal.fastapiinfo import FastAPIInfo
 from fastbruno.__internal.logger import bruno_logger
-from fastbruno.__internal.fastapi import FastAPI, APIRoute, IS_FASTAPI_INSTALLED
-
 
 BRUNO_JSON = {
     "version": "1",

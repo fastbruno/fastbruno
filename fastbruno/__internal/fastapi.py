@@ -1,6 +1,5 @@
 from fastbruno.__internal.logger import bruno_logger
 
-
 IS_FASTAPI_INSTALLED = False
 
 try:

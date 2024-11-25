@@ -1,6 +1,7 @@
 # Define a singleton class to store FastAPI information
 from fastapi import FastAPI
 
+
 class FastAPIInfo:
     __instance = None
 

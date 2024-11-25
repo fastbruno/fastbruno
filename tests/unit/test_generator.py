@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 
-from fastbruno import Request
-from fastbruno import FastBruno
+from fastbruno import FastBruno, Request
 
 
 def test_generator(fastapi_app):

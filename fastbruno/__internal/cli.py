@@ -1,11 +1,11 @@
-import os
-import sys
 import argparse
 import importlib
+import os
+import sys
 
+from fastbruno import FastBruno
 from fastbruno.__internal.fastapi import FastAPI
 from fastbruno.__internal.logger import bruno_logger
-from fastbruno import FastBruno
 
 
 def fastbruno_cli():
