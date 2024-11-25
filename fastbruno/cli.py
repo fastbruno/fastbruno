@@ -16,8 +16,6 @@ def fastbruno_cli():
     parser.add_argument("app_dir", type=str, help="The directory of the FastAPI app")
     args = parser.parse_args()
 
-    sys.path.append(args.app_dir)
-
     if ":" not in args.app_dir:
         bruno_logger.error(
             "App directory must be in the format <module>:<app_instance>. eg: fastbruno.main:app"
@@ -25,6 +23,8 @@ def fastbruno_cli():
         sys.exit(1)
 
     bruno_logger.debug(f"CWD: {os.getcwd()}")
+
+    sys.path.append(os.getcwd())
 
     app_path, app_instance = args.app_dir.split(":")
     try:
