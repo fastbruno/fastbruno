@@ -1,8 +1,17 @@
+import json
 import os
 from fastbruno.__internal.brunofy import Request, explore_route
 from fastbruno.__internal.fastapiinfo import FastAPIInfo
 from fastbruno.__internal.logger import bruno_logger
 from fastbruno.__internal.fastapi import FastAPI, APIRoute, IS_FASTAPI_INSTALLED
+
+
+BRUNO_JSON = {
+    "version": "1",
+    "name": "fastbruno",
+    "type": "collection",
+    "ignore": ["node_modules", ".git"],
+}
 
 
 class FastBruno:
@@ -28,9 +37,13 @@ class FastBruno:
 
     def save_collection(self, req: Request):
         bru_file_path = os.path.join(self.path, f"{req.route_info.name}.bru")
+        bruno_json_path = os.path.join(self.path, "bruno.json")
 
         # Create file and dirs if not exist
         os.makedirs(self.path, exist_ok=True)
+
+        with open(bruno_json_path, "w") as f:
+            f.write(json.dumps(BRUNO_JSON))
 
         with open(bru_file_path, "w") as f:
             f.write(req.to_bru())
