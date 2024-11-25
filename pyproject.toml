@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "fastbruno"
 version = "0.1.0"
-description = "A FastAPI extension to generate Bruno API documentation"
+description = "A FastAPI extension package to generate Bruno API documentation"
 authors = ["Nahid Hasan <nahidhasan282@gmail.com>"]
 readme = "README.md"
 package-mode = true
@@ -19,6 +19,9 @@ uvicorn = "^0.32.1"
 python-multipart = "^0.0.17"
 twine = "^5.1.1"
 mypy = "^1.13.0"
+
+
+[tool.poetry.group.docs.dependencies]
 mkdocs = "^1.6.1"
 
 [build-system]
