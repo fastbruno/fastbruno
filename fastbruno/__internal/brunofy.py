@@ -43,24 +43,8 @@ class ReqParam:
 
     @property
     def which_type(self):
-        if issubclass(self.annotation, BaseModel):
+        if isinstance(self.annotation, type) and issubclass(self.annotation, BaseModel):
             return "json"
-        if isinstance(self.annotation, list):
-            return "list"
-        if isinstance(self.annotation, dict):
-            return "dict"
-        if isinstance(self.annotation, bool):
-            return "bool"
-        if isinstance(self.annotation, int):
-            return "int"
-        if isinstance(self.annotation, float):
-            return "float"
-        if isinstance(self.annotation, str):
-            return "text"
-        if isinstance(self.annotation, datetime.datetime):
-            return "datetime"
-
-        # print(self.annotation)
         return "text"
 
     def get_body_schema(self):

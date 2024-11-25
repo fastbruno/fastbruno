@@ -36,8 +36,7 @@ class FastBruno:
             f.write(req.to_bru())
 
     def generate(self):
-        print("🔍 Exploring FastAPI Routes:")
-        print("=" * 50)
+        print("🔍 Exploring FastAPI Routes...")
 
         for route in self.app.routes:
             if isinstance(route, APIRoute):
