@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "fastbruno"
-version = "0.1.1"
+version = "0.1.2"
 description = "A FastAPI extension package to generate Bruno API documentation"
 authors = ["Nahid Hasan <nahidhasan282@gmail.com>"]
 readme = "README.md"
