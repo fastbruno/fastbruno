@@ -1,6 +1,6 @@
 from typing import Annotated, List
 
-from fastapi import APIRouter, Body, Depends, Form, Query
+from fastapi import APIRouter, Body, Depends, Form, Header, Query
 from pydantic import BaseModel
 
 router = APIRouter(prefix="/subroute")
@@ -47,3 +47,8 @@ class LogResponse(BaseModel):
 @router.get("/log", response_model=LogResponse, response_description="Log response")
 def log(limit: int, query: str = Query(..., description="Query string")):
     return {"message": f"Hello {query}"}
+
+
+@router.get("/log-with-response-model/:id")
+def log_with_response_model(param: str, id: int, x_ip: str = Header(...)):
+    return {"message": f"Hello {param}"}

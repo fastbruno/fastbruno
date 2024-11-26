@@ -49,7 +49,7 @@ class ReqParam:
         return "text"
 
     def get_body_schema(self):
-        if issubclass(self.annotation, BaseModel):
+        if isinstance(self.annotation, type) and issubclass(self.annotation, BaseModel):
             return self.annotation.model_json_schema().get("properties", {})
         return None
 
