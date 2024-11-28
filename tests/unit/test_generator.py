@@ -7,4 +7,5 @@ def test_generator(fastapi_app):
     assert isinstance(fastapi_app, FastAPI)
     for route_info in FastBruno(fastapi_app).generate():
         assert isinstance(route_info, Request)
-        route_info.to_bru()
+        assert isinstance(route_info.to_bru(), str)
+        print(route_info.to_bru())

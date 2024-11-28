@@ -1,4 +1,5 @@
 from typing import Annotated, List
+import uuid
 
 from fastapi import APIRouter, Body, Depends, Form, Header, Query
 from pydantic import BaseModel
@@ -52,3 +53,16 @@ def log(limit: int, query: str = Query(..., description="Query string")):
 @router.get("/log-with-response-model/:id")
 def log_with_response_model(param: str, id: int, x_ip: str = Header(...)):
     return {"message": f"Hello {param}"}
+
+
+class LogResponseWithModel(BaseModel):
+    uid: uuid.UUID
+
+
+@router.put("/put/{random_id}/update")
+def put_router(
+    random_id: uuid.UUID,
+    body: LogResponseWithModel,
+    dep: str = Depends(get_cookie_params),
+):
+    return {"put": random_id, "body": body, "dep": dep}
