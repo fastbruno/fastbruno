@@ -1,10 +1,12 @@
 import datetime
+from enum import Enum
 import urllib.parse
 from collections import defaultdict
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional, Union
 
 from fastapi.routing import APIRoute
+from fastapi._compat import ModelField
 from pydantic import BaseModel
 
 from fastbruno.__internal.brunotypes import (
@@ -15,6 +17,14 @@ from fastbruno.__internal.brunotypes import (
     Meta,
     RequestType,
 )
+
+
+class DataType(Enum):
+    TEXT = "text"
+    JSON = "json"
+    NUMBER = "number"
+    BOOLEAN = "boolean"
+    FILE = "file"
 
 
 @dataclass
@@ -39,18 +49,60 @@ class RouteInfo:
 @dataclass
 class ReqParam:
     name: str
-    annotation: Any
+    model_field: Optional["ModelField"]
     place: Literal["query", "header", "cookie", "body", "path"] = "query"
 
     @property
     def which_type(self):
-        if isinstance(self.annotation, type) and issubclass(self.annotation, BaseModel):
-            return "json"
-        return "text"
+        if not self.model_field or not hasattr(
+            self.model_field.field_info, "annotation"
+        ):
+            return DataType.TEXT.value
+
+        annotation = self.model_field.field_info.annotation
+
+        # Handle Pydantic BaseModel
+        if isinstance(annotation, type) and issubclass(annotation, BaseModel):
+            return DataType.JSON.value
+
+        # Handle UploadFile
+        if annotation.__name__ == "UploadFile":
+            return DataType.FILE.value
+
+        # Handle basic types
+        basic_type_mapping = {
+            str: DataType.TEXT.value,
+            int: DataType.NUMBER.value,
+            float: DataType.NUMBER.value,
+            bool: DataType.BOOLEAN.value,
+            dict: DataType.JSON.value,
+        }
+        if annotation in basic_type_mapping:
+            return basic_type_mapping[annotation]
+
+        # Handle typing annotations (List, Dict, Union, Optional)
+        origin = getattr(annotation, "__origin__", None)
+        if origin:
+            if origin in (list, dict):
+                return DataType.JSON.value
+            if origin in (Union,):
+                # For Optional[str] or Union types, use the first type
+                args = getattr(annotation, "__args__", [])
+                if args and args[0] != type(None):  # noqa: E721
+                    return basic_type_mapping.get(args[0], DataType.TEXT.value)
+
+        # Default fallback
+        return DataType.TEXT.value
 
     def get_body_schema(self):
-        if isinstance(self.annotation, type) and issubclass(self.annotation, BaseModel):
-            return self.annotation.model_json_schema().get("properties", {})
+        if (
+            self.model_field
+            and isinstance(self.model_field.field_info.annotation, type)
+            and issubclass(self.model_field.field_info.annotation, BaseModel)
+        ):
+            return self.model_field.field_info.annotation.model_json_schema().get(
+                "properties", {}
+            )
         return None
 
 
@@ -133,28 +185,15 @@ def explore_route(route: APIRoute, base_url: str) -> Request:
     if hasattr(route, "dependant"):
         # Run one loop to get all params
         for p in route.dependant.path_params:
-            request.path.append(
-                ReqParam(name=p.name, annotation=p.field_info.annotation, place="path")
-            )
+            # print(p.field_info)
+            request.path.append(ReqParam(name=p.name, place="path", model_field=p))
         for p in route.dependant.query_params:
-            request.query.append(
-                ReqParam(name=p.name, annotation=p.field_info.annotation, place="query")
-            )
+            request.query.append(ReqParam(name=p.name, place="query", model_field=p))
         for p in route.dependant.header_params:
-            request.header.append(
-                ReqParam(
-                    name=p.name, annotation=p.field_info.annotation, place="header"
-                )
-            )
+            request.header.append(ReqParam(name=p.name, place="header", model_field=p))
         for p in route.dependant.cookie_params:
-            request.cookie.append(
-                ReqParam(
-                    name=p.name, annotation=p.field_info.annotation, place="cookie"
-                )
-            )
+            request.cookie.append(ReqParam(name=p.name, place="cookie", model_field=p))
         for p in route.dependant.body_params:
-            request.body = ReqParam(
-                name=p.name, annotation=p.field_info.annotation, place="body"
-            )
+            request.body = ReqParam(name=p.name, place="body", model_field=p)
 
     return request

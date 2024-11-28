@@ -1,7 +1,7 @@
 from typing import Annotated, List
 import uuid
 
-from fastapi import APIRouter, Body, Depends, Form, Header, Query
+from fastapi import APIRouter, Body, Depends, File, Form, Header, Query, UploadFile
 from pydantic import BaseModel
 
 router = APIRouter(prefix="/subroute")
@@ -66,3 +66,8 @@ def put_router(
     dep: str = Depends(get_cookie_params),
 ):
     return {"put": random_id, "body": body, "dep": dep}
+
+
+@router.post("/file")
+def file(file: UploadFile = File(...)):
+    return {"filename": file.filename}
