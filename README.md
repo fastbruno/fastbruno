@@ -24,5 +24,5 @@ And Boom! This will generate a `bruno` directory in the root of your project con
 Now open your Bruno app and open the `bruno` folder and you should see all your favorite API routes and queries.
 
 # Report an issue
-- [Give it a star ⭐️](https://github.com/joynahid/fastbruno)
-- [Report an issue](https://github.com/joynahid/fastbruno/issues)
+- [Give it a star ⭐️](https://github.com/fastbruno/fastbruno)
+- [Report an issue](https://github.com/fastbruno/fastbruno/issues)

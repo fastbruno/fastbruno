@@ -4,7 +4,14 @@ version = "0.1.5"
 description = "A FastAPI extension package to generate Bruno API documentation"
 authors = ["Nahid Hasan <nahidhasan282@gmail.com>"]
 readme = "README.md"
+repository = "https://github.com/fastbruno/fastbruno"
 package-mode = true
+
+classifiers = [
+    "Topic :: Software Development :: Build Tools",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+
 
 [tool.poetry.scripts]
 fastbruno = "fastbruno.cli:fastbruno_cli"
