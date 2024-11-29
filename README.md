@@ -1,3 +1,7 @@
+<!-- define height and width -->
+
+<img src="docs/assets/image.png" alt="fastbruno" width="200">
+
 # Welcome to Fast Bruno
 
 Fast Bruno is a tool that allows you to generate Bruno files from FastAPI apps. What if you could generate a bunch of Bruno files from your FastAPI app and have them automatically updated when you make changes to your app?
